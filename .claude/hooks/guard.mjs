@@ -38,7 +38,7 @@ function realPathOf(p) {
 }
 
 function block(rule, message) {
-  safe(() => {
+  if (!process.env.HARNESS_DEMO) safe(() => {
     mkdirSync(join(project, '.hackathon'), { recursive: true });
     appendFileSync(join(project, '.hackathon', 'guard.log'), JSON.stringify({ at: new Date().toISOString(), rule, tool }) + '\n');
   });

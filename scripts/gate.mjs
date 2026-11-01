@@ -24,7 +24,18 @@ function frontmatter(path) {
 const filled = (v) => v && v !== 'null' && !v.startsWith('<');
 const read = (p) => (existsSync(p) ? readFileSync(p, 'utf8') : '');
 const run = (cmd) => { try { execSync(cmd, { stdio: 'pipe' }); return true; } catch { return false; } };
-const contextOk = () => run(`node "${resolve(NEXUS, 'tools/context-assemble.mjs')}" --nexus "${NEXUS}" --squad ${SQUAD} --check`);
+// Pulls first, so the check sees what the other squad and the business published. On failure, the hint names the stale pins.
+let staleHint = '';
+const contextOk = () => {
+  try { execSync(`node "${resolve(NEXUS, 'tools/context-assemble.mjs')}" --nexus "${NEXUS}" --squad ${SQUAD} --pull --check`, { stdio: 'pipe' }); return true; }
+  catch (e) {
+    const out = String(e.stdout ?? '');
+    const pins = [...out.matchAll(/^\s+(BREAKING|UPDATE|TARGET_STALE|MISSING)\s+(\S+)\s+pinned (\S+) → current (\S+)/gm)].map((m) => `${m[2].split('/').pop()} ${m[3]} → ${m[4]}`);
+    const own = [...out.matchAll(/^✗ (\S+) \(v[^,]+, stale\)/gm)].map((m) => `${m[1].split('/').pop()} is stale`);
+    staleHint = [...new Set([...pins, ...own])].join('; ');
+    return false;
+  }
+};
 const mdFiles = (dir) => (existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith('.md')).map((f) => resolve(dir, f)) : []);
 const section = (body, h) => (body.split(h)[1] ?? '').split(/\n## /)[0].split('\n').slice(1).join('\n').trim();
 const TAG = /\[(Nexus|Head of Receivables|Squad decision|To confirm)/i;
@@ -53,7 +64,7 @@ if (gate === 'G2') {
   const contracts = mdFiles(resolve(TEAM, 'contracts')).map((p) => [p, frontmatter(p)]);
   check('G2-4', 'contract published in v1 (≥ 1.0.0), active', contracts.length > 0 && contracts.every(([, f]) => Number((f.version ?? '0').split('.')[0]) >= 1 && f.status === 'active'),
     contracts.filter(([, f]) => Number((f.version ?? '0').split('.')[0]) < 1).map(([p]) => p.split('/').pop()).join(', '));
-  check('G2-5', 'pins up to date, nothing stale (context check)', contextOk(), 'npm run context, then read the output');
+  check('G2-5', 'pins up to date, nothing stale (context check)', contextOk(), `${staleHint ? `re-pin: ${staleHint}. ` : ''}npm run context shows the details`);
 }
 
 if (gate === 'G3') {
@@ -67,7 +78,7 @@ if (gate === 'G3') {
   const untested = acs.filter((ac) => !new RegExp(`\\b${ac}\\b`).test(tests));
   check('G3-5', 'every acceptance criterion has a test named after it (ENG-02)', acs.length > 0 && untested.length === 0, untested.length ? `no test for ${untested.join(', ')}` : 'no AC-n id in the published spec');
   check('G3-6', 'no secret or bank data (SEC-01, SEC-02)', run('npm run scan'));
-  check('G3-7', 'spec up to date, nothing stale (context check)', contextOk());
+  check('G3-7', 'spec up to date, nothing stale (context check)', contextOk(), `${staleHint ? `re-pin: ${staleHint}. ` : ''}npm run context shows the details`);
 }
 
 if (gate === 'G4') {

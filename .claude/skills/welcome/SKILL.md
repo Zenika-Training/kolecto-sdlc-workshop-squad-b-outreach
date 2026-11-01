@@ -8,6 +8,7 @@ description: Welcome the squad at the start of the hackathon. Checks the environ
 Goal: in under a minute, the squad knows where it is, and the environment is proven to work.
 
 1. Check, and report each line with ✓ or ✗ (do not fix silently):
+   - `.hackathon/ready` exists. If not, stop here: "The Codespace is still being prepared. Wait for **✓ Ready.** in the creation log (Command Palette → *Codespaces: View Creation Log*), then open a new terminal and run claude again." Locally, `bash .devcontainer/post-create.sh` creates it.
    - `../context-nexus/` exists (or `NEXUS_DIR` is set): `ls ../context-nexus/teams`.
    - `npm run context` succeeds; read its pin report.
    - `npm test` is green (unit tests of the starter).

@@ -39,7 +39,10 @@ if [ -f package.json ]; then echo "▸ npm install"; npm install --silent; fi
 echo "▸ Context of $SQUAD"
 npm run --silent context | tail -2
 
+mkdir -p .hackathon && date -u +%FT%TZ > .hackathon/ready
+
 echo
 echo "✓ Ready."
-echo "  1. Connect Claude to the account you were given: claude auth login"
-echo "  2. Run claude in the terminal (trust the folder), then type /welcome"
+echo "  1. Open a NEW terminal (+), then connect Claude: claude auth login"
+echo "     Choose your Claude account, sign in, copy the code shown, paste it into the terminal."
+echo "  2. Run claude, choose \"Yes, I trust this folder\" (the default is \"No, exit\"), then type /welcome"

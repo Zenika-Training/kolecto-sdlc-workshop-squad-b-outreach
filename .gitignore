@@ -7,3 +7,4 @@ dist/
 graphify-out/
 context-nexus
 .hackathon/guard.log
+.hackathon/ready

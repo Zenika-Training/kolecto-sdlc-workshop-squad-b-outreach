@@ -22,13 +22,14 @@
     "test:reference": "vitest run test/reference",
     "test:coverage": "vitest run --coverage",
     "scan": "node scripts/scan-secrets.mjs",
-    "context": "node scripts/nexus.mjs context-assemble --squad squad-b-outreach --out .context/brief.md",
+    "context": "node scripts/nexus.mjs context-assemble --squad squad-b-outreach --pull --out .context/brief.md",
     "publish": "node scripts/nexus.mjs publish",
     "contract-diff": "node scripts/nexus.mjs contract-diff --squad squad-b-outreach",
     "flag": "node scripts/flag.mjs",
     "deploy": "node scripts/deploy.mjs",
     "observe": "node scripts/observe.mjs",
     "gate": "node scripts/gate.mjs",
+    "harness-demo": "node scripts/harness-demo.mjs",
     "graph": "graphify extract . --code-only && graphify cluster-only . --no-label"
   },
   "dependencies": {

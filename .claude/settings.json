@@ -25,7 +25,12 @@
       "Bash(git -C ../context-nexus diff *)",
       "Bash(git -C ../context-nexus show *)",
       "Bash(graphify *)",
-      "Bash(npm run graph)"
+      "Bash(npm run graph)",
+      "Bash(npm run harness-demo)",
+      "Bash(.specify/scripts/bash/*)",
+      "Bash(bash .specify/scripts/bash/*)",
+      "Bash(sh .specify/scripts/bash/*)",
+      "Bash(curl -s http://localhost:*)"
     ],
     "deny": [
       "Bash(npm run flag *)",
