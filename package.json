@@ -18,7 +18,7 @@
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "test": "vitest run test/unit",
+    "test": "vitest run test/unit test/legacy",
     "test:reference": "vitest run test/reference",
     "test:coverage": "vitest run --coverage",
     "scan": "node scripts/scan-secrets.mjs",

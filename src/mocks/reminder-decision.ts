@@ -1,6 +1,6 @@
 /**
  * Mock of squad A's `reminder-decision` contract, **v0.1.0** (teams/squad-a-policy/contracts/reminder-decision.md),
- * written by facilitation before squad A existed. Code against it until squad A publishes v1, then align this
+ * written by facilitation before squad A existed, from the fields of the old dunning-v0 export (src/billing/dunning-v0/). Code against it until squad A publishes v1, then align this
  * mock and your types with the published contract, field for field.
  */
 export interface ReminderDecisionV0 {

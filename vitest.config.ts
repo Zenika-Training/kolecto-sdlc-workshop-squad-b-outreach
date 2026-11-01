@@ -6,7 +6,8 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       include: ['src/**/*.ts'],
-      exclude: ['src/index.ts'],
+      // src/billing/ is Core Billing's existing code, with its own suite in test/legacy/: ENG-03 applies to the squad's code.
+      exclude: ['src/index.ts', 'src/billing/**'],
       // ENG-03: line coverage ≥ 70 %
       thresholds: { lines: 70 },
     },

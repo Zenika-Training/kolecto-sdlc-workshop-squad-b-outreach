@@ -13,7 +13,10 @@ export interface PlanReminderInput {
 /** The planned reminder. Its exact shape is yours to define in your spec and publish in your contract. */
 export type ReminderPlan = Record<string, unknown>;
 
-/** Squad B · Outreach. Business rules RR-06 to RR-09; exact expected outputs in the reference cases. */
+/**
+ * Squad B · Outreach. Business rules RR-06 to RR-09; exact expected outputs in the reference cases.
+ * Reuse Core Billing (src/billing/) where it already does the job: `npm run graph`, then `graphify query`.
+ */
 export function planReminder(input: PlanReminderInput): ReminderPlan {
   void input;
   throw new NotImplementedError('planReminder');

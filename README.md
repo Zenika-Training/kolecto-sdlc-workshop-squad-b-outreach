@@ -27,7 +27,8 @@
 | `.context/brief.md` | What Claude reads, assembled from the Context Nexus (`npm run context`) |
 | `../context-nexus/` | The shared Context Nexus: you read everything, you write only in `teams/squad-b-outreach/` |
 | `src/domain/` | The function to implement (a stub for now) |
-| `test/unit/` | Your tests · `test/reference/` the programme's reference tests (read-only) |
+| `src/billing/` | **Core Billing**: existing production code of another team. Reuse it, never modify it. `npm run graph` shows what it offers and who depends on what |
+| `test/unit/` | Your tests · `test/reference/` the programme's reference tests (read-only) · `test/legacy/` Core Billing's tests |
 | `.specify/` | Spec Kit: templates and constitution |
 
 Skills: `/welcome` · `/nexus` · `/publish` · `/gate` · `/contract-diff` · `/speckit-*` · `/graphify`.

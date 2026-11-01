@@ -31,7 +31,8 @@
       "Bash(npm run flag *)",
       "Bash(node scripts/flag.mjs *)",
       "Edit(test/reference/**)",
-      "Edit(.context/**)"
+      "Edit(.context/**)",
+      "Edit(src/billing/**)"
     ],
     "additionalDirectories": [
       "../context-nexus"

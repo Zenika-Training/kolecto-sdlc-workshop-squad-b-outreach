@@ -4,7 +4,8 @@
 //   1. the agent never switches a feature flag (release ≠ activation, ORG-02);
 //   2. in the Context Nexus, the agent writes only in teams/<its-squad>/ (ORG-07);
 //   3. .context/brief.md is generated: never edited by hand;
-//   4. test/reference/ belongs to the programme: never edited (ENG-04).
+//   4. test/reference/ belongs to the programme: never edited (ENG-04);
+//   5. src/billing/ is existing Core Billing code owned by another team: reused, never edited (ORG-08).
 // Exit code 2 = the action is blocked and stderr is shown to the agent.
 // Any internal error lets the action through: a guardrail must never block work by accident.
 
@@ -95,6 +96,11 @@ function checkWriteTarget(file, via) {
   }
   if ((real + sep).startsWith(join(projectReal, 'test', 'reference') + sep)) {
     block('reference-tests', 'test/reference/ holds the programme\'s reference tests (ENG-04): they are read-only. Make the code pass them; if a case looks wrong, tell the humans so they raise it with the Head of Receivables.');
+  }
+  if ((real + sep).startsWith(join(projectReal, 'src', 'billing') + sep)) {
+    block('core-billing', 'src/billing/ is Core Billing\'s code, in production for every customer (ORG-08): reuse it, do not modify it. ' +
+      'Import what you need from it in src/domain/. To see who depends on a symbol, run graphify affected "<symbol>". ' +
+      'If it really needs a change, tell the humans: they open a change request with Core Billing.');
   }
 }
 

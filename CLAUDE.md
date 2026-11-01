@@ -21,6 +21,7 @@ If it is missing or outdated, run `npm run context` (or `/nexus`), then read wha
 - Spec Kit order: `/speckit-constitution` → `/speckit-specify` → `/speckit-clarify` → `/speckit-plan` → `/speckit-tasks` → `/speckit-implement`. The constitution only contains principles found in the brief, each with the id of its source (ORG-xx, SEC-xx, ENG-xx, RR-xx).
 - Acceptance criteria in the spec carry ids `AC-1`, `AC-2`… and are written Given / When / Then. Every criterion has at least one unit test in `test/unit/` whose name starts with its id (ENG-02).
 - Every feature sits behind the feature flag `reminders_outreach_plan`, off by default. You never switch a flag: the harness blocks it.
+- `src/billing/` is **Core Billing**, existing production code owned by another team (ORG-08). Reuse it, never modify it (the harness blocks edits). Before writing any helper (days between dates, business days, Paris time, amounts, outstanding balance, templates), look for it there with the graph. Do not build on anything marked `@deprecated`.
 - Code always takes `today` / `now` as parameters, never the system clock (decision D-06).
 - Code and specs in English. Be concise: read a precise file rather than the whole repository.
 
@@ -29,12 +30,14 @@ If it is missing or outdated, run `npm run context` (or `/nexus`), then read wha
 - Fastify API in TypeScript (Node 22). The slice's route is in `src/routes.ts`, behind the flag in `flags.json`.
 - The domain function to implement is in `src/domain/`: it is a **stub** that throws `NotImplementedError`.
 - Squad B implements `planReminder` in `src/domain/plan-reminder.ts`. The route `POST /v1/reminders/plan` is already wired to it.
+- Core Billing (`src/billing/`) already handles Paris time, business days, public holidays and templates. Find it with the graph before writing it again (RR-06 is the hardest rule to get right alone).
 - `src/mocks/reminder-decision.ts` mocks squad A's contract **v0**. When squad A publishes v1, align the mock and your input type with the published contract, field for field, and pin that version in your spec and contract.
+- `src/billing/` is Core Billing (ledger, customers, calendar, money, templates, notifications, exports, reporting, and `dunning-v0/`, the manual chasing export this programme will replace). See `src/billing/README.md`.
 - `data/` holds the synthetic pilot dataset (reference day 2026-11-20). Amounts are always integer **cents**.
 
 | Command | What it does |
 |---|---|
-| `npm test` | Unit tests (`test/unit/`) |
+| `npm test` | Unit tests (`test/unit/`) and Core Billing's tests (`test/legacy/`) |
 | `npm run test:reference` | The programme's reference tests (`test/reference/`) |
 | `npm run test:coverage` | All tests, coverage ≥ 70 % |
 | `npm run lint` / `npm run typecheck` | Code quality |
@@ -47,7 +50,8 @@ If it is missing or outdated, run `npm run context` (or `/nexus`), then read wha
 
 ## Code graph (Graphify)
 
-`npm run graph` builds a knowledge graph of this starter's code in `graphify-out/` (local tree-sitter analysis: nothing leaves the machine). Open `graphify-out/graph.html` to see it.
+`npm run graph` builds a knowledge graph of this starter's code, Core Billing included, in `graphify-out/` (local tree-sitter analysis: nothing leaves the machine). Open `graphify-out/graph.html` to see it.
+- Use it first to find what Core Billing already offers: `graphify query "outstanding balance"`, `graphify explain "nextBusinessSlot"`.
 - When `graphify-out/graph.json` exists, run `graphify query "<question>"` before your first grep or source-file read for a codebase question. Use `graphify path "<A>" "<B>"` for relationships, `graphify explain "<concept>"` for one concept, and `graphify affected "<symbol>"` to see what a change impacts.
 - After modifying code, run `graphify update .` to keep the graph current (no API cost).
 - `/graphify src` rebuilds it from the skill; keep it on `src` so it stays code-only and fast.
