@@ -6,7 +6,7 @@
 
 ## Start (5 minutes, before the session)
 
-1. Open this repository in a **Codespace** (green *Code* button → *Codespaces* → *Create*), or locally: clone it next to `kolecto-context-nexus` (renamed `context-nexus`) and run `bash .devcontainer/post-create.sh`.
+1. Open this repository in a **Codespace** (green *Code* button → *Codespaces* → *Create*), or locally: clone it next to the Context Nexus (`zenika-dev/kolecto-sdlc-workshop-context-nexus`, cloned as `context-nexus`) and run `bash .devcontainer/post-create.sh`.
 2. In the terminal: `claude auth login` with the Claude account you were given.
 3. `claude`, then type **`/welcome`**.
 

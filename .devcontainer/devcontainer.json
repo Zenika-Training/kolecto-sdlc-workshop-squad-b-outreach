@@ -12,7 +12,7 @@
     "codespaces": {
       // Lets the Codespace publish to the shared Context Nexus (write access to that repository is required).
       "repositories": {
-        "zenika-dev/kolecto-context-nexus": { "permissions": { "contents": "write" } }
+        "zenika-dev/kolecto-sdlc-workshop-context-nexus": { "permissions": { "contents": "write" } }
       },
       "openFiles": ["README.md"]
     },
