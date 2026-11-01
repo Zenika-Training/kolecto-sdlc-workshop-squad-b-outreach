@@ -80,6 +80,20 @@ function bashWriteTargets(command) {
   return targets;
 }
 
+// Runs the flag switch: npm run flag, or the script executed (node scripts/flag.mjs, ./scripts/flag.mjs).
+// Reading it (cat, grep, sed -n…) is fine: only the command's verb counts, not a path in its arguments.
+function runsFlagScript(command) {
+  if (/\bnpm\b(?:\s+-\S+)*\s+(?:run|run-script)\s+(?:--\s+)?flag(?:\s|$)/.test(command)) return true;
+  for (const seg of command.split(/\n|&&|\|\||;|\|/)) {
+    const words = splitShell(seg.trim());
+    let i = 0; while (i < words.length && (['sudo', 'env', 'exec'].includes(words[i]) || /^\w+=/.test(words[i]))) i++;
+    const verb = words[i] || '';
+    const script = verb === 'node' || verb === 'bun' || verb === 'deno' ? words.slice(i + 1).find(w => !w.startsWith('-')) || '' : verb;
+    if (/(^|\/)scripts\/flag\.mjs$/.test(script)) return true;
+  }
+  return false;
+}
+
 function checkWriteTarget(file, via) {
   const real = realPathOf(file.replace(/^~(?=\/|$)/, process.env.HOME || '~'));
   for (const nx of nexusDirs()) {
@@ -107,7 +121,7 @@ function checkWriteTarget(file, via) {
 if (tool === 'Bash' && typeof ti.command === 'string') {
   const cmd = ti.command;
   // 1. Flag switch (also denied in settings.json: belt and braces)
-  if (/\bnpm\b(?:\s+-\S+)*\s+(?:run|run-script)\s+(?:--\s+)?flag(?:\s|$)|scripts\/flag\.mjs/.test(cmd)) {
+  if (runsFlagScript(cmd)) {
     block('flag', 'Switching a feature flag is a human decision (ORG-02: release ≠ activation). ' +
       'Tell the squad that their Decision Guarantor runs it in a terminal: npm run flag -- <name> on --reason "…". ' +
       'The journal line (who, when, why) is what gate G4 checks.');

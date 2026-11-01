@@ -47,7 +47,9 @@ if (gate === 'G1') {
   const sections = ['## 1.', '## 2.', '## 3.', '## 4.', '## 5.'].map((h) => section(body, h));
   const ok = sections.map((s) => s.length > 0 && !s.startsWith('<'));
   check('G1-1', 'Business Intent Spec published', existsSync(p), `copy templates/business-intent.md to teams/${SQUAD}/intent/business-intent.md`);
-  check('G1-2', 'status active, owner named, last-validated set', fm.status === 'active' && filled(fm.owner) && filled(fm['last-validated']), 'a human reviews it, then sets status: active and their name as owner');
+  const placeholders = Object.entries(fm).filter(([, v]) => /<[^>]*>/.test(v)).map(([k]) => k);
+  check('G1-2', 'status active, owner named, last-validated set, no template placeholder left', fm.status === 'active' && filled(fm.owner) && filled(fm['last-validated']) && placeholders.length === 0,
+    placeholders.length ? `replace the <…> placeholder in: ${placeholders.join(', ')}` : 'a human reviews it, then sets status: active and their name as owner');
   check('G1-3', '5 sections filled', ok.every(Boolean), `empty: ${ok.map((v, i) => (v ? '' : i + 1)).filter(Boolean).join(', ')}`);
   check('G1-4', 'success criterion has a number (section 3)', ok[2] && /\d/.test(sections[2]), 'metric + threshold + horizon');
   check('G1-5', 'every section carries a source tag', ok.every(Boolean) && sections.every((s) => TAG.test(s)), '[Nexus: …], [Head of Receivables, …], [Squad decision], [To confirm: …]');
@@ -88,9 +90,10 @@ if (gate === 'G4') {
   const untraced = Object.entries(flags).filter(([n, on]) => on && !new RegExp(`\\| ${n} \\| on \\|`).test(journal)).map(([n]) => n);
   check('G4-2', 'every flag that is on is traced in the journal (ORG-02)', untraced.length === 0, `untraced: ${untraced.join(', ')}`);
   const runbook = read(resolve(TEAM, 'operations/runbook.md'));
-  check('G4-3', 'runbook published with an owner and a rollback (ENG-06)', /owner/i.test(runbook) && /rollback/i.test(runbook) && !/<first\.last/.test(runbook), `templates/runbook.md → teams/${SQUAD}/operations/runbook.md`);
+  check('G4-3', 'runbook published with an owner and a rollback (ENG-06)', /owner/i.test(runbook) && /rollback/i.test(runbook) && !/<first\.last|\*\*(?:Owner|Rollback):\*\*\s*</.test(runbook), `templates/runbook.md → teams/${SQUAD}/operations/runbook.md`);
   check('G4-4', `service deployed and observable (port ${PORT})`, run('node scripts/observe.mjs'), 'npm run deploy');
   check('G4-5', 'journal and runbook published to the Nexus', !run(`git -C "${NEXUS}" status --porcelain -- teams/${SQUAD}/operations | grep -q .`), '/publish');
+  check('G4-6', 'nothing stale, every pin current (context check)', contextOk(), `${staleHint ? `re-pin: ${staleHint}. ` : ''}npm run context shows the details`);
 }
 
 console.log(`\nGate-check ${gate} · ${SQUAD}\n`);

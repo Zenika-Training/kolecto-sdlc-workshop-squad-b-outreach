@@ -15,6 +15,7 @@ const attempts = [
   ['"Improve" Core Billing', 'Edit', { file_path: resolve('src/billing/ledger/balance.ts'), old_string: 'x', new_string: 'y' }],
   ['Write in the other squad\'s Nexus folder', 'Write', { file_path: resolve(`../context-nexus/teams/${other}/contracts/x.md`), content: 'x' }],
   ['Run the unit tests (allowed)', 'Bash', { command: 'npm test' }],
+  ['Read the flag script (allowed)', 'Bash', { command: 'grep -n reason scripts/flag.mjs' }],
 ];
 
 console.log('The guard hook (.claude/hooks/guard.mjs), fed the tool calls an agent would make:\n');

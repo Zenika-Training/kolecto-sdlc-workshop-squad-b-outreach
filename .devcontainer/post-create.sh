@@ -13,7 +13,9 @@ command -v uv >/dev/null || curl -LsSf https://astral.sh/uv/install.sh | env UV_
 uv tool install --quiet "graphifyy==0.9.99" || echo "⚠ Graphify not installed: uv tool install graphifyy==0.9.99"
 
 echo "▸ Claude Code"
-command -v claude >/dev/null || curl -fsSL https://claude.ai/install.sh | bash
+# Pinned to the version tested in the Codespace crash test, so every participant gets the same one.
+CLAUDE_VERSION="${CLAUDE_VERSION:-2.1.316}"
+command -v claude >/dev/null || curl -fsSL https://claude.ai/install.sh | bash -s "$CLAUDE_VERSION"
 
 # PATH, and empty secrets removed, for every new terminal.
 grep -q 'AI-PDLC hackathon' "$HOME/.bashrc" 2>/dev/null || cat >> "$HOME/.bashrc" <<'RC'
@@ -34,7 +36,8 @@ else
   [ -e "$NEXUS_LINK" ] || ln -s "$NEXUS_REAL" "$NEXUS_LINK"
 fi
 
-if [ -f package.json ]; then echo "▸ npm install"; npm install --silent; fi
+# npm ci installs exactly the committed lockfile and leaves it untouched (npm install rewrote it in the container).
+if [ -f package.json ]; then echo "▸ npm ci"; npm ci --silent || npm install --silent; fi
 
 echo "▸ Context of $SQUAD"
 npm run --silent context | tail -2

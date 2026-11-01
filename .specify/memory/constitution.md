@@ -1,50 +1,35 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Squad B · Outreach Constitution
+
+<!-- Pre-filled from the organisation's rules in the Context Nexus (org/), so the squad starts from them.
+     /speckit-constitution adds the business rules (RR-xx) this squad's slice depends on, each with its id. -->
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Human decisions stay human (ORG-02, ORG-05)
+Every new behaviour ships behind a feature flag, off by default. Only a named human activates a flag, with a reason traced in the flag journal. The agent never sets an intent, a spec or a contract to `active` and never signs a gate.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Contracts are the truth between squads (ORG-04, API-01, API-02, API-03)
+Published contracts are the source of truth. Each exchanged field has a name, a type, a unit (amounts: integer minor units plus `currency`) and an example. A breaking change bumps the major version, and consumers are told before it is published. When code and a contract disagree: stop and report, never guess.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Never build on stale context (ORG-06, ORG-07)
+A `stale` artefact or a pin on an outdated version is read and realigned before any new code. A squad writes only in its own folder of the Context Nexus.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Reuse existing code, never modify it (ORG-08)
+Core Billing (`src/billing/`) is reused, not modified; a needed change goes to its owners. Nothing new is built on a `@deprecated` symbol.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Tested against the spec (ENG-01 to ENG-05)
+Lint and typecheck pass. Every acceptance criterion has a unit test named after its id. Coverage is at least 70 %. The reference tests pass and are read-only. The spec is updated with what implementation taught.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Data, security and time (ORG-01, ORG-03, SEC-01 to SEC-04)
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+Synthetic data only. No secret and no bank detail anywhere, even fake. Logs carry ids, never an e-mail or a name. HTTP inputs are validated: an invalid input returns `400` with an error code. Dates are ISO 8601, business time is Europe/Paris, and code takes `today` / `now` as parameters.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Business rules of this slice
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+<!-- /speckit-constitution: list the RR-xx rules from the brief that this squad's function applies, one line each with its id. -->
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+Operations (ENG-06): a deployed service exposes `/health` and `/metrics` and has a runbook with an owner and a rollback. This constitution changes only with the squad's agreement; the rule ids stay the reference.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: the session day | **Last Amended**: the session day

@@ -27,6 +27,7 @@
       "Bash(graphify *)",
       "Bash(npm run graph)",
       "Bash(npm run harness-demo)",
+      "Bash(npm run deprecated)",
       "Bash(.specify/scripts/bash/*)",
       "Bash(bash .specify/scripts/bash/*)",
       "Bash(sh .specify/scripts/bash/*)",

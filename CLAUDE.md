@@ -18,10 +18,12 @@ If it is missing or outdated, run `npm run context` (or `/nexus`), then read wha
 - The other squad's contract is the truth as pinned in the brief. If you find a gap (name, type, unit, format) between our code or contract and theirs, **stop and report it** with both excerpts, instead of picking an interpretation.
 - If the brief reports a `stale` artefact or a pinned version that changed, do not write new code on that basis until the squad has read the change (`/contract-diff`).
 - `test/reference/` holds the programme's reference tests, generated from the business's acceptance examples. They are read-only. Make the code pass them.
-- Spec Kit order: `/speckit-constitution` → `/speckit-specify` → `/speckit-clarify` → `/speckit-plan` → `/speckit-tasks` → `/speckit-implement`. The constitution only contains principles found in the brief, each with the id of its source (ORG-xx, SEC-xx, ENG-xx, RR-xx).
+- Spec Kit order: `/speckit-constitution` → `/speckit-specify` → `/speckit-clarify` → `/speckit-plan` → `/speckit-tasks` → `/speckit-implement`. The constitution comes pre-filled with the organisation's rules; `/speckit-constitution` only adds the business rules (RR-xx) of this slice, each with its id. Nothing in it without a source id.
 - Acceptance criteria in the spec carry ids `AC-1`, `AC-2`… and are written Given / When / Then. Every criterion has at least one unit test in `test/unit/` whose name starts with its id (ENG-02).
 - Every feature sits behind the feature flag `reminders_outreach_plan`, off by default. You never switch a flag: the harness blocks it.
-- `src/billing/` is **Core Billing**, existing production code owned by another team (ORG-08). Reuse it, never modify it (the harness blocks edits). Before writing any helper (days between dates, business days, Paris time, amounts, outstanding balance, templates), look for it there with the graph. Do not build on anything marked `@deprecated`.
+- `src/billing/` is **Core Billing**, existing production code owned by another team (ORG-08). Reuse it, never modify it (the harness blocks edits). Before writing any helper (days between dates, business days, Paris time, amounts, outstanding balance, templates), look for it there with the graph. Do not build on anything marked `@deprecated`: the graph does not show it, `npm run deprecated` does.
+- In `/speckit-clarify`, a question about the other squad's contract or about the business's ambition is not yours to answer: do not propose an answer, mark it `[To confirm: <the other squad or the Head of Receivables>]` and tell the humans to go and ask.
+- Source tags: the Head of Receivables' date is the day they answered (the session day), not the dataset's reference day.
 - Code always takes `today` / `now` as parameters, never the system clock (decision D-06).
 - Code and specs in English. Be concise: read a precise file rather than the whole repository.
 
@@ -45,6 +47,7 @@ If it is missing or outdated, run `npm run context` (or `/nexus`), then read wha
 | `npm run context` | Re-assemble `.context/brief.md` from the Context Nexus |
 | `npm run publish -- -m "…"` | Publish `teams/squad-b-outreach/` to the Context Nexus |
 | `npm run gate -- G1` | Automatic gate-check (G1 to G4): run it before asking the gate keeper |
+| `npm run deprecated` | Core Billing's `@deprecated` symbols, and whether our code imports one |
 | `npm run deploy` / `npm run observe` | Local deploy on port 3002, health and metrics (G4) |
 | `npm run flag -- reminders_outreach_plan on --reason "…"` | Traced flag switch: **human only**, never run it yourself |
 

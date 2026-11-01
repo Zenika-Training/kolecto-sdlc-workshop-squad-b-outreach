@@ -30,6 +30,7 @@
     "observe": "node scripts/observe.mjs",
     "gate": "node scripts/gate.mjs",
     "harness-demo": "node scripts/harness-demo.mjs",
+    "deprecated": "node scripts/deprecated.mjs",
     "graph": "graphify extract . --code-only && graphify cluster-only . --no-label"
   },
   "dependencies": {
