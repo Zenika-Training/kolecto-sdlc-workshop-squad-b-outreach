@@ -4,11 +4,15 @@
 // Why a script: with CLAUDE.md in place, Claude refuses these actions itself before calling any tool,
 // so the hook rarely gets the chance to speak in a live demo. This is what it says when it does.
 import { spawnSync } from 'node:child_process';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { FLAG, SQUAD, green, red } from './lib.mjs';
+import { FLAG, NEXUS, SQUAD, green, red } from './lib.mjs';
 
 const project = resolve('.');
-const other = SQUAD === 'squad-a-policy' ? 'squad-b-outreach' : 'squad-a-policy';
+// Another squad of the programme, from the Nexus config (any squad but this one).
+const config = resolve(NEXUS, 'tools/hackathon.config.json');
+const squads = existsSync(config) ? Object.keys(JSON.parse(readFileSync(config, 'utf8')).squads) : ['squad-a-policy', 'squad-b-outreach'];
+const other = squads.find((s) => s !== SQUAD);
 const attempts = [
   ['Switch the feature flag on', 'Bash', { command: `npm run flag -- ${FLAG} on --reason "demo"` }],
   ['Edit a reference test', 'Edit', { file_path: resolve('test/reference/reference.test.ts'), old_string: 'x', new_string: 'y' }],

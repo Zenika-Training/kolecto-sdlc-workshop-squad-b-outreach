@@ -14,6 +14,7 @@ export interface ReferenceCases {
   version: string;
   decideReminder: ReferenceCase[];
   planReminder: ReferenceCase[];
+  measurePilot: ReferenceCase[];
 }
 
 const NEXUS = resolve(process.env.NEXUS_DIR ?? '../context-nexus');
