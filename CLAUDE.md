@@ -26,6 +26,8 @@ If it is missing or outdated, run `npm run context` (or `/nexus`), then read wha
 - Source tags: the Head of Receivables' date is the day they answered (the session day), not the dataset's reference day.
 - Code always takes `today` / `now` as parameters, never the system clock (decision D-06).
 - Code and specs in English. Be concise: read a precise file rather than the whole repository.
+- Shell: one simple command per call, run from the starter folder. No `cd … &&`, no pipes into scripts, no `sed -i`: use the file tools to edit. Compound commands stop on a permission prompt for the humans.
+- The spec travels with `npm run spec:publish` (to the Nexus) and `npm run spec:pull` (from it): never copy it by hand.
 
 ## This starter
 
@@ -48,6 +50,7 @@ If it is missing or outdated, run `npm run context` (or `/nexus`), then read wha
 | `npm run publish -- -m "…"` | Publish `teams/squad-b-outreach/` to the Context Nexus |
 | `npm run gate -- G1` | Automatic gate-check (G1 to G4): run it before asking the gate keeper |
 | `npm run deprecated` | Core Billing's `@deprecated` symbols, and whether our code imports one |
+| `npm run spec:publish` / `npm run spec:pull` | Spec Kit spec and working files to / from `teams/squad-b-outreach/intent/specs/` (then `/publish`) |
 | `npm run deploy` / `npm run observe` | Local deploy on port 3002, health and metrics (G4) |
 | `npm run flag -- reminders_outreach_plan on --reason "…"` | Traced flag switch: **human only**, never run it yourself |
 

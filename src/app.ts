@@ -18,7 +18,8 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
   app.addHook('onResponse', async (request, reply) => {
     metrics.record(request.routeOptions.url ?? 'unknown', reply.statusCode);
   });
-  app.get('/health', async () => ({ status: 'ok', squad: SQUAD, flags }));
+  // pid: deploy and observe check that the process answering is the one deployed from this folder.
+  app.get('/health', async () => ({ status: 'ok', squad: SQUAD, pid: process.pid, flags }));
   app.get('/metrics', async () => metrics.snapshot());
   registerRoutes(app, flags);
   return app;

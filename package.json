@@ -31,6 +31,8 @@
     "gate": "node scripts/gate.mjs",
     "harness-demo": "node scripts/harness-demo.mjs",
     "deprecated": "node scripts/deprecated.mjs",
+    "spec:publish": "node scripts/spec.mjs publish",
+    "spec:pull": "node scripts/spec.mjs pull",
     "graph": "graphify extract . --code-only && graphify cluster-only . --no-label"
   },
   "dependencies": {

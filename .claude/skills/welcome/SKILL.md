@@ -20,4 +20,4 @@ Goal: in under a minute, the squad knows where it is, and the environment is pro
    - the hats: Specification Engineer, Context Engineer, Agentic Workflow Orchestrator, Decision Guarantor (+ Evaluation Engineer for a third person). Ask who wears which, do not assign them.
 3. First step (Discover): copy `../context-nexus/templates/business-intent.md` to `../context-nexus/teams/<squad>/intent/business-intent.md` **only if the humans ask**, and suggest they first list what the brief does not say and ask the Head of Receivables.
 
-Do not write any intent content yourself at this step. Keep the answer short.
+At this step, write nothing in `intent/` on your own: you draft when a human asks, and a human signs. Keep the answer short.
