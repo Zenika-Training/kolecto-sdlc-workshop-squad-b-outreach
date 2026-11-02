@@ -36,6 +36,7 @@ If it is missing or outdated, run `npm run context` (or `/nexus`), then read wha
 - Squad B implements `planReminder` in `src/domain/plan-reminder.ts`. The route `POST /v1/reminders/plan` is already wired to it.
 - Core Billing (`src/billing/`) already handles Paris time, business days, public holidays and templates. Find it with the graph before writing it again (RR-06 is the hardest rule to get right alone).
 - `src/mocks/reminder-decision.ts` mocks squad A's contract **v0**. When squad A publishes v1, align the mock and your input type with the published contract, field for field, and pin that version in your spec and contract.
+- `MISSION.md` (the squad's mission and example prompts per phase) and `CHEATSHEET.md` (commands) are for the humans; you may read them to know which phase they are in.
 - `src/billing/` is Core Billing (ledger, customers, calendar, money, templates, notifications, exports, reporting, and `dunning-v0/`, the manual chasing export this programme will replace). See `src/billing/README.md`.
 - `data/` holds the synthetic pilot dataset (reference day 2026-11-20). Amounts are always integer **cents**.
 
