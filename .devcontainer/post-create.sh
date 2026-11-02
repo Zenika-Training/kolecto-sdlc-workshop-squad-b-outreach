@@ -3,7 +3,7 @@
 # Also usable locally on macOS / Linux from the starter folder: bash .devcontainer/post-create.sh
 set -euo pipefail
 
-NEXUS_URL="${NEXUS_URL:-https://github.com/zenika-training/kolecto-sdlc-workshop-context-nexus.git}"
+NEXUS_URL="${NEXUS_URL:-https://github.com/Zenika-Training/kolecto-sdlc-workshop-context-nexus.git}"
 STARTER_DIR="$(pwd)"
 SQUAD="${SQUAD:-$(cat .hackathon/squad 2>/dev/null || basename "$STARTER_DIR" | sed 's/^starter-//')}"
 export PATH="$HOME/.local/bin:$PATH"
